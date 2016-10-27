@@ -28,8 +28,9 @@ public class Pokemon
 					atk = move.getJSONObject("type").getString("name");
 				}catch(Exception e)
 				{
-					System.out.println("Error in atk");
-					e.printStackTrace();
+					System.out.println("Attack type not found");
+					//e.printStackTrace();
+					atk = null;
 				}
 			}
 			//check if def is type or pokemon
@@ -47,24 +48,29 @@ public class Pokemon
 					}
 				}catch(Exception e)
 				{
-					System.out.println("Error in def");
-					e.printStackTrace();
+					System.out.println("Defense type not found.");
+					//e.printStackTrace();
+					def = null;
 				}
 			}
-			System.out.println("atk: "+atk);
-			System.out.println("def: "+def);
+			if(atk!=null && def!=null)
+			{
+				System.out.println("atk: "+atk);
+				System.out.println("def: "+def);
+			}
 			//compare atk types to def types and get multipliers
 			double multiply = -1;
 			try
 			{
 				multiply = calculateMultiplier(atk, def.trim().split(" "));
-			}catch(JSONException e)
+				System.out.println(multiply + "x damage!");
+			}catch(Exception e)
 			{
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println("One or more invalid inputs.");
 			}
-			System.out.println(multiply + "x damage!");
 			System.out.println("<Atk type/move> -> <Def Types/Pokemon>");
-			input = scan.nextLine();
+			input = scan.nextLine().toLowerCase();
 		}
 	}
 
@@ -87,8 +93,8 @@ public class Pokemon
 			return new JSONObject(page.toString());
 		}catch(Exception e)
 		{
-			System.out.println("Error in "+subaddr);
-			e.printStackTrace();
+			System.out.println("Page not found: "+subaddr);
+			//e.printStackTrace();
 		}
 		return new JSONObject();
 	}
